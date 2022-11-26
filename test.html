@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+</head>
+<body>
+    <input type="file" id="file" onchange="fileChange()" multiple="multiple">
+    <button onclick="submit()">제출하기</button>
+<script>
+    const url = "http://localhost:8080/mergeFile"
+    // 전연변수로 초기화시 undefined
+    // const file = document.getElementById('file').files[0];
+
+    function fileChange() {
+        const pdfFile = document.getElementById('file').files[0];
+        const file = new File([pdfFile], "foo.pdf", {type: "application/json"})
+
+        const pdfFile2 = document.getElementById('file').files[1];
+        const file2 = new File([pdfFile2], "foo2.pdf", { type: "application/json" })
+
+        const fileList = [file, file2];
+
+        console.log(fileList);
+
+
+        $.ajax({
+            url: url,
+            method: "POST",
+            type: 'application/json',
+            data: JSON.stringify(fileList),
+            success: function(result) {
+                console.log(result);
+            }
+        })
+    }
+
+</script>
+</body>
+</html>
